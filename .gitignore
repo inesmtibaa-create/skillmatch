@@ -3,3 +3,24 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .env
+
+# Spring Boot / Maven
+skillmatchweb/target/
+skillmatchweb/.mvn/wrapper/maven-wrapper.jar
+*.class
+.idea/
+*.iml
+
+# Spring Boot / Maven
+skillmatchweb/target/
+skillmatchweb/.mvn/wrapper/maven-wrapper.jar
+*.class
+.idea/
+*.iml
+
+# Spring Boot / Maven
+skillmatchweb/target/
+skillmatchweb/.mvn/wrapper/maven-wrapper.jar
+*.class
+.idea/
+*.iml
