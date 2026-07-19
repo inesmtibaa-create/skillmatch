@@ -14,8 +14,9 @@ public class Offre {
     @Column(nullable = false)
     private String titre;
 
-    @Column(nullable = false)
-    private String entreprise;
+    @ManyToOne
+    @JoinColumn(name = "entreprise_id", nullable = false)
+    private Entreprise entreprise;
 
     private String ville;
 
@@ -34,10 +35,10 @@ public class Offre {
 
     private Boolean remunere;
 
-    // Constructeur par défaut (nécessaire pour JPA)
+    
     public Offre() {}
 
-    // Getters et Setters
+
     public Long getId() {
         return id;
     }

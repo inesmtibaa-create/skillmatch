@@ -1,5 +1,6 @@
 package com.skillmatch.skillmatchweb.controllers;
 
+import com.skillmatch.skillmatchweb.dto.OffreDTO;
 import com.skillmatch.skillmatchweb.models.Offre;
 import com.skillmatch.skillmatchweb.repositories.OffreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,12 @@ public class OffreController {
 
     @Autowired
     private OffreRepository offreRepository;
-
-    // Récupérer toutes les offres (GET http://localhost:8080/api/offres)
     @GetMapping
-    public List<Offre> getAllOffres() {
-        return offreRepository.findAll();
+    public List<OffreDTO> getAllOffres() {
+        return offreRepository.findAll()
+            .stream()
+            .map(OffreDTO::new)
+            .toList();
     }
 
     // Ajouter une nouvelle offre (POST http://localhost:8080/api/offres)
