@@ -3,14 +3,13 @@ package com.skillmatch.skillmatchweb.controllers;
 import com.skillmatch.skillmatchweb.models.Etudiant;
 import com.skillmatch.skillmatchweb.repositories.EtudiantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/etudiants")
-@CrossOrigin(origins = "*") // Permet à ton futur frontend Next.js de faire des requêtes sans blocage CORS
+@CrossOrigin(origins = "*") 
 public class EtudiantController {
 
     @Autowired
