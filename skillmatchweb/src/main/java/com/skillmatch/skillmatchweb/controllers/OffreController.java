@@ -23,7 +23,6 @@ public class OffreController {
             .toList();
     }
 
-    // Ajouter une nouvelle offre (POST http://localhost:8080/api/offres)
     @PostMapping
     public Offre createOffre(@RequestBody Offre offre) {
         return offreRepository.save(offre);

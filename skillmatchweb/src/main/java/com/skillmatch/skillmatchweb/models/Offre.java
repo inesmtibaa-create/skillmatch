@@ -55,11 +55,11 @@ public class Offre {
         this.titre = titre;
     }
 
-    public String getEntreprise() {
+    public Entreprise getEntreprise() {
         return entreprise;
     }
 
-    public void setEntreprise(String entreprise) {
+    public void setEntreprise(Entreprise entreprise) {
         this.entreprise = entreprise;
     }
 
