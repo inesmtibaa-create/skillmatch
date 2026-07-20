@@ -1,44 +1,51 @@
 # SkillMatch frontend
 
-Small React interface for displaying ranked results produced by the SkillMatch model.
-
-## Scope
-
-- One responsive results page
-- No authentication, routing, dashboard, or backend logic
-- Reads either a JSON array or an object containing `context` and `results`
-- Displays a score only when the model output provides one
+Small React + Vite frontend for the existing SkillMatch backend and model results.
 
 ## Run locally
+
+Start the backend on port `8080`, then:
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Result format
+Copy `.env.example` to `.env` when different URLs are needed:
 
-The default file is `public/model-results.json`. Its minimal shape is:
-
-```json
-{
-  "context": {
-    "profile": "stage python data science",
-    "city": "Tunis"
-  },
-  "results": [
-    {
-      "titre": "STAGE DATA SCIENTIST",
-      "entreprise": "Carthage Analytics",
-      "domaine": "Data",
-      "ville": "Tunis"
-    }
-  ]
-}
+```env
+VITE_API_URL=http://localhost:8080
+VITE_RESULTS_URL=/model-results.json
 ```
 
-Set `VITE_RESULTS_URL` to another JSON URL when the model exposes one. The frontend does not calculate, reorder, or modify recommendations.
+## Pages
+
+- `/` — home
+- `/offres` — backend offers
+- `/recommandations` — model results
+- `/entreprises` and `/entreprises/:id` — companies
+- `/etudiants` — student profiles
+- `/inscription` and `/connexion` — role-aware auth forms
+- `/compte` — returned profile and demo session
+- `/publier` — company offer form
+- `/outils` — raw creation endpoints, development mode only
+
+## Backend boundary
+
+The frontend uses the backend as it currently exists. It does not modify backend logic or claim support for applications, saved offers, update/delete operations, or secure authenticated sessions.
+
+Login responses are stored in `sessionStorage` only to demonstrate the returned profile. This is not production authentication because the backend does not return a token or session cookie.
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run preview
+```
 
 ## Fonts
 
-This personal-use frontend uses the supplied Magilio demo font and Space Grotesk files. Review the font licenses before any public or commercial deployment.
+The supplied Magilio demo font is for local/personal evaluation only. Obtain the appropriate license before public or commercial deployment. Space Grotesk is used for functional interface text.
+
+See [FRONTEND_PLAN.md](./FRONTEND_PLAN.md) for scope and endpoint coverage.
