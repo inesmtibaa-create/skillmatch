@@ -1,26 +1,23 @@
-from sentence_transformers import SentenceTransformer
-
-modele_embeddings = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-import pandas as pd
-offres = pd.read_csv('data/offres.csv')
-offres['texte_complet'] = (
-    offres['description'] + ' ' + offres['competences'] + ' ' + offres['domaine']
-).str.lower()
-
-embeddings_offres = modele_embeddings.encode(offres['texte_complet'].tolist())
-
-print(embeddings_offres.shape)
-from sklearn.metrics.pairwise import cosine_similarity
-
-profil_etudiant = "stage python data science machine learning"
-
-embedding_etudiant = modele_embeddings.encode([profil_etudiant])
-
-scores = cosine_similarity(embedding_etudiant, embeddings_offres)
+import re
 import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from synonymes import SYNONYMES
+def charger_offres():
+    offres = pd.read_csv('data/offres.csv')
+    offres = offres.dropna(subset=['description', 'competences', 'domaine'])
+    offres['texte_complet'] = offres['domaine'] + ' ' + offres['description']+ ' ' + (offres['competences']+ ' ') + offres['titre']
+    offres['texte_complet']=offres['texte_complet'].str.lower()
+    return offres
 
-top_indices = np.argsort(scores[0])[::-1][:5]
+def recommander_offres_embeddings(profil, offres_df, modele, embeddings_offres, top_n=5):
+    embedding_profil = modele.encode([profil.lower()])
+    scores = cosine_similarity(embedding_profil, embeddings_offres)[0]
 
-for i in top_indices:
-    pourcentage = round(scores[0][i] * 100, 1)
-    print(f"{offres.iloc[i]['titre']} — {pourcentage}% de correspondance")
+    top_indices = np.argsort(scores)[::-1][:top_n]
+
+    resultats = offres_df.iloc[top_indices].copy()
+    resultats['pourcentage_match'] = [round(scores[i] * 100, 1) for i in top_indices]
+
+    return resultats[['titre', 'entreprise', 'domaine', 'ville', 'pourcentage_match']]
