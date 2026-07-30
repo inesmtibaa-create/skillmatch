@@ -4,6 +4,13 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from synonymes import SYNONYMES
+STOP_WORDS_FR = [
+    'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'et', 'à', 'au', 'aux',
+    'ce', 'ces', 'cette', 'cet', 'il', 'elle', 'ils', 'elles', 'on', 'nous', 'vous',
+    'dans', 'pour', 'par', 'sur', 'avec', 'sans', 'sous', 'entre', 'est', 'sont',
+    'être', 'avoir', 'que', 'qui', 'quoi', 'dont', 'où', 'mais', 'ou', 'donc',
+    'car', 'ne', 'pas', 'plus', 'très', 'aussi', 'son', 'sa', 'ses', 'leur', 'leurs'
+]
 def normaliser_synonymes(texte):
     for mot, remplacement in SYNONYMES.items():
         texte = re.sub(r'\b' + re.escape(mot) + r'\b', remplacement, texte)
@@ -11,12 +18,12 @@ def normaliser_synonymes(texte):
 def charger_offres():
     offres = pd.read_csv('data/offres.csv')
     offres = offres.dropna(subset=['description', 'competences', 'domaine'])
-    offres['texte_complet'] = offres['domaine'] + ' ' + offres['description']+ ' ' + offres['competences']+ ' ' + offres['titre']
+    offres['texte_complet'] = offres['domaine'] + ' ' + offres['description']+ ' ' + (offres['competences']+ ' ')*2 + offres['titre']
     offres['texte_complet'] = offres['texte_complet'].apply(normaliser_synonymes)
     offres['texte_complet']=offres['texte_complet'].str.lower()
     return offres
 def entrainer_vectorizer(offres):
-    vectorizer = TfidfVectorizer(ngram_range=(1, 2))
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words=STOP_WORDS_FR, sublinear_tf=True)
     vectorizer.fit(offres['texte_complet'])
     return vectorizer
 
