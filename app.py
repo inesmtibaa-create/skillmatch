@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify
 
 from flask_cors import CORS
 
-from modele import charger_offres, entrainer_vectorizer, recommander_offres
+from modele import charger_offres, entrainer_embeddings, recommander_offres
 
 app = Flask(__name__)
 CORS(app)
 offres = charger_offres()
-vectorizer = entrainer_vectorizer(offres)
+modele, embeddings_offres = entrainer_embeddings(offres)
 @app.route('/recommander', methods=['POST'])
 def recommander():
     data = request.get_json()
@@ -20,7 +20,7 @@ def recommander():
 
         return jsonify({"erreur": "Le profil est requis"}), 400
 
-    resultat = recommander_offres(profil, ville,offres, vectorizer)
+    resultat = recommander_offres(profil, ville,offres, modele, embeddings_offres)
 
     if isinstance(resultat, str):
 

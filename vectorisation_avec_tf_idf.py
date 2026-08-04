@@ -37,6 +37,6 @@ def recommander_offres(profil,ville,offres,vectorizer):
     matrice_offres_filtrées = vectorizer.transform(offres_filtrées['texte_complet'])
     vector_profil = vectorizer.transform([profil.lower()])
     scores= cosine_similarity(vector_profil, matrice_offres_filtrées)
-    top_indices = np.argsort(scores[0])[::-1][:3]
+    top_indices = np.argsort(scores[0])[::-1][:5]
     return offres_filtrées.iloc[top_indices][['titre', 'entreprise', 'domaine', 'ville']]
 
